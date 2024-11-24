@@ -14,7 +14,9 @@ const signup = async (req, res) => {
         .json(`The password must match the confirmPassword`);
     }
 
-    const newUser = await User.create(req.body);
+    const hashPassword = await bcryptjs.hash(password, 10);
+    const newUser = await User.create({ ...req.body, password: hashPassword });
+
     res.json({
       fullName: newUser.fullName,
       userName: newUser.userName,
