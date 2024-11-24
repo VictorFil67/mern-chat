@@ -14,9 +14,14 @@ const signup = async (req, res) => {
         .json(`The password must match the confirmPassword`);
     }
 
-    const hashPassword = await bcryptjs.hash(password, 10);
-    const newUser = await User.create({ ...req.body, password: hashPassword });
-
+    const salt = await bcryptjs.genSalt(10);
+    const hashPassword = await bcryptjs.hash(password, salt);
+    // const hashPassword = await bcryptjs.hash(password, 10); you can so
+    //the first variant
+    // const newUser = await User.create({ ...req.body, password: hashPassword });
+    //the second variant
+    const newUser = new User({ ...req.body, password: hashPassword });
+    await newUser.save();
     res.json({
       fullName: newUser.fullName,
       userName: newUser.userName,
