@@ -8,6 +8,11 @@ const signup = async (req, res) => {
     if (user) {
       return res.status(400).json(`The user ${userName} has allready exist`);
     }
+    if (password !== confirmPassword) {
+      return res
+        .status(400)
+        .json(`The password must match the confirmPassword`);
+    }
 
     const newUser = await User.create(req.body);
     res.json({
