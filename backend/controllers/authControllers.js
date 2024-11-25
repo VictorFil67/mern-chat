@@ -40,10 +40,9 @@ const signup = async (req, res) => {
       await newUser.save();
 
       res.status(201).json({
+        _id: newUser._id,
         fullName: newUser.fullName,
         userName: newUser.userName,
-        password: newUser.password,
-        gender: newUser.gender,
         profilePic: newUser.profilePic,
       });
     } else {
@@ -56,16 +55,39 @@ const signup = async (req, res) => {
     res.status(500).json({ error: "Intermal server error" });
   }
 };
-const login = (req, res) => {
+const login = async (req, res) => {
   try {
-    console.log("signin");
-    res.json("Login Route");
-  } catch (error) {}
+    const { userName, password } = req.body;
+    const user = await User.findOne({ userName });
+
+    const isTokenCorrect = await bcryptjs.compare(
+      password,
+      user?.password || ""
+    );
+    console.log(isTokenCorrect);
+    if (!user || !isTokenCorrect) {
+      return res.status(400).json("Invalid credentials");
+    }
+    generateTokenAndSetCookie(user._id, res);
+
+    res.status(200).json({
+      _id: user._id,
+      fullName: user.fullName,
+      userName: user.userName,
+      profilePic: user.profilePic,
+    });
+  } catch (error) {
+    console.log("Error in signin controller", error.message);
+    res.status(500).json({ error: "Intermal server error" });
+  }
 };
 const logout = (req, res) => {
   try {
-    console.log("logout");
-    res.json("Logout Route");
-  } catch (error) {}
+    res.cookie("jwt", "", { maxAge: 0 });
+    res.status(200).json("Loged out successfully");
+  } catch (error) {
+    console.log("Error in logout controller", error.message);
+    res.status(500).json({ error: "Intermal server error" });
+  }
 };
 export default { signup, login, logout };
