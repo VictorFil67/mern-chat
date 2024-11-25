@@ -1,6 +1,7 @@
 const sendMessage = async (req, res) => {
-  console.log("The message sent");
-  await res.json("The message sent");
+  const { id } = req.params;
+  console.log(`The message sent to user ${id}`);
+  await res.json(`The message sent to user ${id}`);
 };
 
 export default { sendMessage };
