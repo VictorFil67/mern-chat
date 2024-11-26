@@ -22,8 +22,9 @@ const sendMessage = async (req, res) => {
       reseiverId,
       message,
     });
-
-    conversation.messages.push(newMessage._id);
+    if (newMessage) {
+      conversation.messages.push(newMessage._id);
+    }
 
     await newMessage.save();
     await conversation.save();
