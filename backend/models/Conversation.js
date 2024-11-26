@@ -10,7 +10,7 @@ const conversationSchema = new Schema(
     ],
     messages: [{ type: Schema.Types.ObjectId, ref: "message", default: [] }],
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: false }
 );
 
 const Conversation = model("conversation", conversationSchema);

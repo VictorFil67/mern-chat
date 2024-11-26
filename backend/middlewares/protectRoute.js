@@ -11,12 +11,13 @@ const protectRoute = async (req, res, next) => {
     }
 
     const detected = jwt.verify(token, JWT_SECRET);
-    console.log(detected);
-    if (detected) {
+    // console.log(detected);
+    if (!detected) {
       return res.status(401).json({ error: "Unauthorized: invalid token" });
     }
     const { userId } = detected;
     const user = await User.findById(userId).select("-password");
+    // console.log(user);
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
