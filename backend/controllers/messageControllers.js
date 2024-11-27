@@ -49,7 +49,7 @@ const getMessages = async (req, res) => {
     if (!conversation) {
       return res.status(200).json([]);
     }
-    const messages = conversation.messages;
+    const { messages } = conversation;
     res.status(200).json(messages);
   } catch (error) {
     console.log("Error in getMessage controller: ", error.message);

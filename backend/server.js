@@ -12,8 +12,9 @@ app.use(cookieParser());
 
 const { PORT = 8000 } = process.env;
 
-app.use("/api/users", authRouter);
+app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
+app.use("/api/users", authRouter);
 
 app.listen(5000, () => {
   connectToMongoDB().then(() =>
