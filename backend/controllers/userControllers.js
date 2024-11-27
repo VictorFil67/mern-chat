@@ -4,16 +4,16 @@ const getUsersForSidebar = async (req, res) => {
   try {
     const { _id: loggedInUserId } = req.user;
     //the first variant
-    // const filteredUsers = await User.find({
-    //   _id: { $ne: loggedInUserId },
-    // }).select("-password");
+    const filteredUsers = await User.find({
+      _id: { $ne: loggedInUserId },
+    }).select("-password");
     //the second variant
-    const filteredUsers = await User.find(
-      {
-        _id: { $ne: loggedInUserId },
-      },
-      "-password"
-    );
+    // const filteredUsers = await User.find(
+    //   {
+    //     _id: { $ne: loggedInUserId },
+    //   },
+    //   "-password"
+    // );
 
     res.status(200).json(filteredUsers);
   } catch (error) {
