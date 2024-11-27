@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import connectToMongoDB from "./db/connectToMongoDB.js";
 import messageRouter from "./routes/messageRouter.js";
 import cookieParser from "cookie-parser";
+import userRouter from "./routes/userRouter.js";
 
 dotenv.config();
 const app = express();
@@ -14,7 +15,7 @@ const { PORT = 8000 } = process.env;
 
 app.use("/api/auth", authRouter);
 app.use("/api/messages", messageRouter);
-app.use("/api/users", authRouter);
+app.use("/api/users", userRouter);
 
 app.listen(5000, () => {
   connectToMongoDB().then(() =>
